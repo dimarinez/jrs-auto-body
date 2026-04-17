@@ -2,235 +2,805 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, text-size-adjust: 100%, -webkit-text-size-adjust: 100%, -ms-text-size-adjust: 100%">
     <title>Jr's Auto Body — Collision Repair San Diego, CA</title>
     <meta name="description" content="Jr's Auto Body in San Diego 92113. Expert collision repair, body work, painting, and dent removal.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* ============================================
+           CUSTOM PROPERTIES
+           ============================================ */
         :root {
             --red: #dc2626;
             --red-dark: #b91c1c;
+            --red-glow: rgba(220, 38, 38, 0.35);
             --dark: #111;
             --dark-card: #1a1a1a;
             --steel: #374151;
+            --steel-light: #4b5563;
             --white: #f9fafb;
             --gray: #6b7280;
             --light-gray: #f3f4f6;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --nav-height: 72px;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; color: #1f2937; background: var(--white); }
 
-        nav {
-            position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(17,17,17,0.97); backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            display: flex; justify-content: space-between; align-items: center;
+        /* ============================================
+           RESET + BASE
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0; padding: 0;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
         }
+
+        *::selection {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        *::-moz-selection {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #1f2937;
+            background: var(--white);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           FILM GRAIN OVERLAY
+           ============================================ */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        /* ============================================
+           SCROLL REVEAL ANIMATIONS
+           ============================================ */
+        .reveal {
+            opacity: 0;
+            -webkit-transform: translateY(40px);
+            -ms-transform: translateY(40px);
+            transform: translateY(40px);
+            -webkit-transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+            transition: opacity 0.9s var(--ease-out-expo), -webkit-transform 0.9s var(--ease-out-expo);
+            transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+        }
+
+        .reveal.revealed {
+            opacity: 1;
+            -webkit-transform: translateY(0);
+            -ms-transform: translateY(0);
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { -webkit-transition-delay: 0.1s; transition-delay: 0.1s; }
+        .reveal-delay-2 { -webkit-transition-delay: 0.2s; transition-delay: 0.2s; }
+        .reveal-delay-3 { -webkit-transition-delay: 0.3s; transition-delay: 0.3s; }
+        .reveal-delay-4 { -webkit-transition-delay: 0.4s; transition-delay: 0.4s; }
+        .reveal-delay-5 { -webkit-transition-delay: 0.5s; transition-delay: 0.5s; }
+        .reveal-delay-6 { -webkit-transition-delay: 0.6s; transition-delay: 0.6s; }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: transparent;
+            -webkit-backdrop-filter: blur(0px);
+            backdrop-filter: blur(0px);
+            padding: 1.2rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            -webkit-transition: background 0.5s var(--ease-out-expo), padding 0.5s var(--ease-out-expo), backdrop-filter 0.5s var(--ease-out-expo);
+            transition: background 0.5s var(--ease-out-expo), padding 0.5s var(--ease-out-expo), -webkit-backdrop-filter 0.5s var(--ease-out-expo);
+            transition: background 0.5s var(--ease-out-expo), padding 0.5s var(--ease-out-expo), backdrop-filter 0.5s var(--ease-out-expo);
+        }
+
+        nav.scrolled {
+            background: rgba(17, 17, 17, 0.97);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            padding: 0.8rem 2rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
         .nav-brand {
             font-family: 'Teko', sans-serif;
             color: var(--white);
             font-size: 1.6rem;
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
         .nav-brand span { color: var(--red); }
-        .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
         .nav-links a {
-            color: rgba(255,255,255,0.7); text-decoration: none;
-            font-size: 0.85rem; font-weight: 500;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 4px;
+            -webkit-transition: color 0.3s;
             transition: color 0.3s;
         }
-        .nav-links a:hover { color: var(--red); }
-        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
-        .hamburger span { width: 25px; height: 2px; background: var(--red); }
 
+        /* Nav underline animation */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 2px;
+            background: var(--red);
+            -webkit-transition: width 0.4s var(--ease-out-expo);
+            transition: width 0.4s var(--ease-out-expo);
+        }
+        .nav-links a:hover { color: var(--white); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            cursor: pointer; background: none; border: none;
+            padding: 4px;
+            z-index: 1001;
+        }
+        .hamburger span {
+            width: 25px; height: 2px; background: var(--red);
+            -webkit-transition: all 0.3s;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        /* ============================================
+           HERO
+           ============================================ */
         .hero {
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--dark) 0%, var(--steel) 100%);
+            min-height: 100dvh;
+            background:
+                linear-gradient(160deg,
+                    rgba(17, 17, 17, 0.97) 0%,
+                    rgba(30, 30, 30, 0.95) 30%,
+                    rgba(55, 65, 81, 0.9) 60%,
+                    rgba(17, 17, 17, 0.98) 100%);
             display: flex; align-items: center; justify-content: center;
             text-align: center;
             padding: 6rem 2rem;
+            position: relative;
+            overflow: hidden;
         }
-        .hero-content { max-width: 700px; }
+
+        /* Animated diagonal stripes */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 40px,
+                rgba(220, 38, 38, 0.015) 40px,
+                rgba(220, 38, 38, 0.015) 80px
+            );
+            -webkit-animation: stripeSlide 25s linear infinite;
+            animation: stripeSlide 25s linear infinite;
+            pointer-events: none;
+        }
+
+        /* Bottom vignette */
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 40%;
+            background: linear-gradient(to top, var(--dark), transparent);
+            pointer-events: none;
+        }
+
+        @-webkit-keyframes stripeSlide {
+            0% { -webkit-transform: translate(0, 0); transform: translate(0, 0); }
+            100% { -webkit-transform: translate(80px, 80px); transform: translate(80px, 80px); }
+        }
+        @keyframes stripeSlide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(80px, 80px); }
+        }
+
+        .hero-content {
+            max-width: 750px;
+            position: relative;
+            z-index: 2;
+        }
+
         .hero-badge {
-            display: inline-block; background: var(--red);
-            color: var(--white); padding: 0.4rem 1.5rem;
-            font-family: 'Teko', sans-serif; font-size: 0.9rem;
-            letter-spacing: 3px; text-transform: uppercase;
+            display: inline-block;
+            background: var(--red);
+            color: var(--white);
+            padding: 0.4rem 1.8rem;
+            font-family: 'Teko', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
             margin-bottom: 1.5rem;
+            position: relative;
         }
+
         .hero h1 {
             font-family: 'Teko', sans-serif;
             color: var(--white);
-            font-size: 5rem;
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 700;
             line-height: 0.95;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             margin-bottom: 1rem;
+            text-transform: uppercase;
         }
         .hero h1 span { color: var(--red); }
-        .hero p { color: rgba(255,255,255,0.6); font-size: 1.05rem; line-height: 1.7; margin-bottom: 2.5rem; }
+
+        .hero p {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .scroll-indicator span {
+            font-family: 'Teko', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .scroll-indicator .mouse {
+            width: 22px; height: 34px;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            position: relative;
+        }
+        .scroll-indicator .mouse::before {
+            content: '';
+            position: absolute;
+            top: 6px; left: 50%;
+            width: 3px; height: 7px;
+            margin-left: -1.5px;
+            background: var(--red);
+            border-radius: 2px;
+            -webkit-animation: scrollPulse 2s ease-in-out infinite;
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @-webkit-keyframes scrollPulse {
+            0%, 100% { opacity: 1; -webkit-transform: translateY(0); transform: translateY(0); }
+            50% { opacity: 0.3; -webkit-transform: translateY(8px); transform: translateY(8px); }
+        }
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 1; transform: translateY(0); }
+            50% { opacity: 0.3; transform: translateY(8px); }
+        }
+
+        /* ============================================
+           BUTTONS (sweep-fill hover)
+           ============================================ */
         .btn {
-            display: inline-block; padding: 0.9rem 2.5rem;
-            text-decoration: none; font-weight: 600;
-            font-size: 0.9rem; border-radius: 4px;
-            transition: all 0.3s;
+            display: inline-block;
+            padding: 0.9rem 2.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 0;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            -webkit-transition: color 0.4s var(--ease-out-expo), border-color 0.4s var(--ease-out-expo);
+            transition: color 0.4s var(--ease-out-expo), border-color 0.4s var(--ease-out-expo);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
         }
-        .btn-red { background: var(--red); color: var(--white); }
-        .btn-red:hover { background: var(--red-dark); }
-        .btn-outline { border: 1.5px solid rgba(255,255,255,0.3); color: var(--white); margin-left: 1rem; }
-        .btn-outline:hover { border-color: var(--red); color: var(--red); }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 100%;
+            z-index: -1;
+            -webkit-transition: width 0.45s var(--ease-out-expo);
+            transition: width 0.45s var(--ease-out-expo);
+        }
+        .btn:hover::before { width: 100%; }
 
-        section { padding: 5rem 2rem; }
-        .section-header { text-align: center; margin-bottom: 3rem; }
+        .btn-red {
+            background: var(--red);
+            color: var(--white);
+            border: 2px solid var(--red);
+        }
+        .btn-red::before { background: var(--red-dark); }
+        .btn-red:hover { color: var(--white); }
+
+        .btn-outline {
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            color: var(--white);
+            margin-left: 1rem;
+            background: transparent;
+        }
+        .btn-outline::before { background: var(--red); }
+        .btn-outline:hover {
+            border-color: var(--red);
+            color: var(--white);
+        }
+
+        /* ============================================
+           MARQUEE STRIP
+           ============================================ */
+        .marquee-strip {
+            background: var(--red);
+            overflow: hidden;
+            padding: 0.6rem 0;
+            position: relative;
+            white-space: nowrap;
+        }
+        .marquee-track {
+            display: inline-flex;
+            -webkit-animation: marqueeScroll 30s linear infinite;
+            animation: marqueeScroll 30s linear infinite;
+        }
+        .marquee-track span {
+            font-family: 'Teko', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--white);
+            padding: 0 2.5rem;
+            display: inline-block;
+        }
+        .marquee-track span::after {
+            content: '\2726';
+            margin-left: 2.5rem;
+            opacity: 0.6;
+        }
+
+        @-webkit-keyframes marqueeScroll {
+            0% { -webkit-transform: translateX(0); transform: translateX(0); }
+            100% { -webkit-transform: translateX(-50%); transform: translateX(-50%); }
+        }
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ============================================
+           SECTION DIVIDER WITH DOT
+           ============================================ */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+        .section-divider .line {
+            width: 60px;
+            height: 1px;
+            background: rgba(107, 114, 128, 0.25);
+        }
+        .section-divider .dot {
+            width: 8px; height: 8px;
+            background: var(--red);
+            margin: 0 1rem;
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        /* ============================================
+           SECTIONS
+           ============================================ */
+        section { padding: 6rem 2rem; }
+        .section-header { text-align: center; margin-bottom: 3.5rem; }
         .section-header h2 {
-            font-family: 'Teko', sans-serif; font-size: 2.5rem;
-            font-weight: 700; letter-spacing: 2px;
+            font-family: 'Teko', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
-        .section-header p { color: var(--gray); margin-top: 0.5rem; }
-        .red-line { width: 50px; height: 3px; background: var(--red); margin: 0.5rem auto; }
+        .section-header p { color: var(--gray); margin-top: 0.75rem; font-size: 0.95rem; }
+        .red-line {
+            width: 50px; height: 3px;
+            background: var(--red);
+            margin: 0.75rem auto;
+        }
 
+        /* ============================================
+           SERVICES
+           ============================================ */
         .services { background: var(--light-gray); }
         .services-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem; max-width: 1100px; margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
         }
-        .service-card {
-            background: var(--white); border-radius: 8px;
-            padding: 2rem; border-left: 4px solid var(--red);
-            transition: transform 0.3s;
-        }
-        .service-card:hover { transform: translateY(-3px); }
-        .service-card h3 { font-family: 'Teko', sans-serif; font-size: 1.3rem; letter-spacing: 1px; font-weight: 600; margin-bottom: 0.5rem; }
-        .service-card p { color: var(--gray); font-size: 0.88rem; line-height: 1.6; }
 
+        .service-card {
+            background: var(--white);
+            padding: 2rem 2rem 2rem 2.2rem;
+            border-left: 4px solid var(--red);
+            position: relative;
+            overflow: hidden;
+            -webkit-transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s var(--ease-out-expo);
+            transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s var(--ease-out-expo);
+        }
+
+        /* Red border that grows on hover */
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px; height: 100%;
+            background: var(--red);
+            -webkit-transition: width 0.5s var(--ease-out-expo);
+            transition: width 0.5s var(--ease-out-expo);
+            z-index: 0;
+        }
+        .service-card:hover::before {
+            width: 8px;
+        }
+        .service-card:hover {
+            -webkit-transform: translateY(-4px);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .service-card h3 {
+            font-family: 'Teko', sans-serif;
+            font-size: 1.35rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .service-card p {
+            color: var(--gray);
+            font-size: 0.88rem;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============================================
+           PROCESS
+           ============================================ */
         .process { background: var(--dark); color: var(--white); }
         .process .section-header h2 { color: var(--white); }
+
         .process-steps {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem; max-width: 900px; margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            max-width: 950px;
+            margin: 0 auto;
+            position: relative;
         }
-        .step { text-align: center; }
+
+        .step {
+            text-align: center;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        /* Connecting line between steps */
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 1.8rem;
+            right: -1px;
+            width: calc(100% - 3rem);
+            height: 2px;
+            background: linear-gradient(to right, var(--red), rgba(220, 38, 38, 0.15));
+            left: calc(50% + 1.5rem);
+        }
+
         .step-num {
             font-family: 'Teko', sans-serif;
-            font-size: 3rem; color: var(--red); font-weight: 700;
+            font-size: 3.2rem;
+            color: var(--red);
+            font-weight: 700;
             line-height: 1;
+            position: relative;
+            display: inline-block;
         }
-        .step h3 { font-size: 1rem; margin: 0.5rem 0 0.3rem; }
-        .step p { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+        .step-num::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 50%;
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+            width: 20px; height: 2px;
+            background: rgba(220, 38, 38, 0.3);
+        }
+        .step h3 {
+            font-family: 'Teko', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            margin: 0.7rem 0 0.4rem;
+            text-transform: uppercase;
+        }
+        .step p { color: rgba(255, 255, 255, 0.45); font-size: 0.82rem; line-height: 1.5; }
 
+        /* ============================================
+           CONTACT
+           ============================================ */
         .contact { text-align: center; }
-        .contact h2 { font-family: 'Teko', sans-serif; font-size: 2.5rem; letter-spacing: 2px; margin-bottom: 1rem; }
-        .contact p { color: var(--gray); margin-bottom: 2rem; }
-        .contact-grid {
-            display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 2rem;
+        .contact h2 {
+            font-family: 'Teko', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
         }
-        .contact-item .label { color: var(--red); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 0.3rem; }
-        .contact-item a { color: #1f2937; text-decoration: none; font-size: 1.05rem; }
+        .contact p { color: var(--gray); margin-bottom: 2rem; }
+
+        .contact-grid {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+        }
+        .contact-item .label {
+            color: var(--red);
+            font-family: 'Teko', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        .contact-item a {
+            color: #1f2937;
+            text-decoration: none;
+            font-size: 1.05rem;
+            -webkit-transition: color 0.3s;
+            transition: color 0.3s;
+        }
         .contact-item a:hover { color: var(--red); }
 
-        .map-container { max-width: 700px; margin: 0 auto; border-radius: 8px; overflow: hidden; border: 2px solid rgba(220,38,38,0.15); }
+        .map-container {
+            max-width: 700px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: 2px solid rgba(220, 38, 38, 0.15);
+        }
         .map-container iframe { width: 100%; height: 280px; border: none; }
 
+        /* ============================================
+           FOOTER
+           ============================================ */
         footer {
-            background: var(--dark); color: var(--gray);
-            text-align: center; padding: 2rem; font-size: 0.8rem;
+            background: var(--dark);
+            color: var(--gray);
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .hamburger { display: flex; }
             .nav-links.active {
-                display: flex; flex-direction: column; position: absolute;
+                display: flex;
+                flex-direction: column;
+                position: absolute;
                 top: 100%; left: 0; right: 0;
-                background: var(--dark); padding: 1.5rem 2rem; gap: 1rem;
+                background: rgba(17, 17, 17, 0.98);
+                -webkit-backdrop-filter: blur(12px);
+                backdrop-filter: blur(12px);
+                padding: 1.5rem 2rem;
+                gap: 1rem;
             }
-            .hero h1 { font-size: 3.2rem; }
+            .hero h1 { font-size: clamp(2.5rem, 10vw, 3.5rem); }
             .btn-outline { margin-left: 0; margin-top: 1rem; }
             .hero .btn { display: block; width: 100%; text-align: center; }
+            .services-grid { grid-template-columns: 1fr; }
+            .process-steps {
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
+            .step:not(:last-child)::after { display: none; }
+            .scroll-indicator { display: none; }
+            .contact-grid { gap: 2rem; }
+        }
+
+        @media (max-width: 480px) {
+            .process-steps { grid-template-columns: 1fr; }
+            section { padding: 4rem 1.5rem; }
+        }
+
+        /* ============================================
+           PREFERS REDUCED MOTION
+           ============================================ */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                -webkit-animation-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                -webkit-animation-iteration-count: 1 !important;
+                animation-iteration-count: 1 !important;
+                -webkit-transition-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal {
+                opacity: 1;
+                -webkit-transform: none;
+                transform: none;
+            }
+            .hero::before {
+                -webkit-animation: none;
+                animation: none;
+            }
         }
     </style>
 </head>
 <body>
-    <nav>
+    <nav id="mainNav">
         <div class="nav-brand">JR'S <span>AUTO BODY</span></div>
         <ul class="nav-links" id="navLinks">
             <li><a href="#services">Services</a></li>
             <li><a href="#process">Process</a></li>
             <li><a href="#contact">Free Estimate</a></li>
         </ul>
-        <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('active')" aria-label="Menu">
+        <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
             <span></span><span></span><span></span>
         </button>
     </nav>
 
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-badge">San Diego Collision Experts</div>
-            <h1>JR'S <span>AUTO BODY</span></h1>
-            <p>Expert collision repair and auto body work in San Diego. From fender benders to full restorations — we'll make it look like new.</p>
-            <a href="#contact" class="btn btn-red">Free Estimate</a>
-            <a href="#services" class="btn btn-outline">Our Work</a>
+            <div class="hero-badge reveal">San Diego Collision Experts</div>
+            <h1 class="reveal reveal-delay-1">JR'S <span>AUTO BODY</span></h1>
+            <p class="reveal reveal-delay-2">Expert collision repair and auto body work in San Diego. From fender benders to full restorations — we'll make it look like new.</p>
+            <div class="reveal reveal-delay-3">
+                <a href="#contact" class="btn btn-red">Free Estimate</a>
+                <a href="#services" class="btn btn-outline">Our Work</a>
+            </div>
+        </div>
+        <div class="scroll-indicator" aria-hidden="true">
+            <span>Scroll</span>
+            <div class="mouse"></div>
         </div>
     </section>
 
+    <div class="marquee-strip" aria-hidden="true">
+        <div class="marquee-track">
+            <span>Collision Repair</span>
+            <span>Auto Painting</span>
+            <span>Dent Removal</span>
+            <span>Frame Straightening</span>
+            <span>Insurance Claims</span>
+            <span>Free Estimates</span>
+            <span>Bumper Repair</span>
+            <span>Glass Replacement</span>
+            <span>Collision Repair</span>
+            <span>Auto Painting</span>
+            <span>Dent Removal</span>
+            <span>Frame Straightening</span>
+            <span>Insurance Claims</span>
+            <span>Free Estimates</span>
+            <span>Bumper Repair</span>
+            <span>Glass Replacement</span>
+        </div>
+    </div>
+
     <section class="services" id="services">
-        <div class="section-header">
+        <div class="section-header reveal">
             <h2>WHAT WE DO</h2>
             <div class="red-line"></div>
             <p>Complete collision and body repair services</p>
         </div>
         <div class="services-grid">
-            <div class="service-card">
+            <div class="service-card reveal reveal-delay-1">
                 <h3>Collision Repair</h3>
                 <p>Full structural and cosmetic repair from accidents. We work with all insurance companies.</p>
             </div>
-            <div class="service-card">
+            <div class="service-card reveal reveal-delay-2">
                 <h3>Auto Painting</h3>
                 <p>Color-matched painting from spot repair to full body paint jobs. Factory-quality finish.</p>
             </div>
-            <div class="service-card">
+            <div class="service-card reveal reveal-delay-3">
                 <h3>Dent Removal</h3>
                 <p>Paintless dent repair and traditional dent removal for all sizes of dents and dings.</p>
             </div>
-            <div class="service-card">
+            <div class="service-card reveal reveal-delay-4">
                 <h3>Frame Straightening</h3>
                 <p>Computer-assisted frame and unibody straightening to factory specs.</p>
             </div>
-            <div class="service-card">
+            <div class="service-card reveal reveal-delay-5">
                 <h3>Bumper Repair</h3>
                 <p>Plastic bumper repair, replacement, and refinishing for front and rear bumpers.</p>
             </div>
-            <div class="service-card">
+            <div class="service-card reveal reveal-delay-6">
                 <h3>Glass Replacement</h3>
                 <p>Windshield and auto glass replacement with proper sealing and calibration.</p>
             </div>
         </div>
     </section>
 
+    <div class="section-divider" aria-hidden="true">
+        <div class="line"></div>
+        <div class="dot"></div>
+        <div class="line"></div>
+    </div>
+
     <section class="process" id="process">
-        <div class="section-header">
+        <div class="section-header reveal">
             <h2>HOW IT WORKS</h2>
             <div class="red-line"></div>
         </div>
         <div class="process-steps">
-            <div class="step">
+            <div class="step reveal reveal-delay-1">
                 <div class="step-num">01</div>
                 <h3>Free Estimate</h3>
                 <p>Bring your vehicle in or send photos for a free assessment</p>
             </div>
-            <div class="step">
+            <div class="step reveal reveal-delay-2">
                 <div class="step-num">02</div>
                 <h3>Insurance Coordination</h3>
                 <p>We work directly with your insurance to handle claims</p>
             </div>
-            <div class="step">
+            <div class="step reveal reveal-delay-3">
                 <div class="step-num">03</div>
                 <h3>Expert Repair</h3>
                 <p>Our technicians restore your vehicle with precision</p>
             </div>
-            <div class="step">
+            <div class="step reveal reveal-delay-4">
                 <div class="step-num">04</div>
                 <h3>Quality Check</h3>
                 <p>Final inspection ensures everything meets our standards</p>
@@ -238,10 +808,30 @@
         </div>
     </section>
 
+    <div class="marquee-strip" aria-hidden="true">
+        <div class="marquee-track">
+            <span>San Diego's Trusted Shop</span>
+            <span>Quality Guaranteed</span>
+            <span>All Insurance Accepted</span>
+            <span>Free Estimates</span>
+            <span>Expert Technicians</span>
+            <span>Since Day One</span>
+            <span>San Diego's Trusted Shop</span>
+            <span>Quality Guaranteed</span>
+            <span>All Insurance Accepted</span>
+            <span>Free Estimates</span>
+            <span>Expert Technicians</span>
+            <span>Since Day One</span>
+        </div>
+    </div>
+
     <section class="contact" id="contact">
-        <h2>GET YOUR FREE ESTIMATE</h2>
-        <p>Stop by or call us. We'll assess the damage and get you back on the road.</p>
-        <div class="contact-grid">
+        <div class="section-header reveal">
+            <h2>GET YOUR FREE ESTIMATE</h2>
+            <div class="red-line"></div>
+            <p>Stop by or call us. We'll assess the damage and get you back on the road.</p>
+        </div>
+        <div class="contact-grid reveal reveal-delay-1">
             <div class="contact-item">
                 <div class="label">Location</div>
                 <div>San Diego, CA 92113</div>
@@ -251,7 +841,7 @@
                 <div>Mon–Fri: 8AM–5:30PM | Sat: 9AM–1PM</div>
             </div>
         </div>
-        <div class="map-container">
+        <div class="map-container reveal reveal-delay-2">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13400.0!2d-117.13!3d32.69!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80d954e3c04a5e1f%3A0x1234567890abcdef!2sSan%20Diego%2C%20CA%2092113!5e0!3m2!1sen!2sus!4v1" allowfullscreen loading="lazy"></iframe>
         </div>
     </section>
@@ -259,5 +849,87 @@
     <footer>
         <p>&copy; 2026 Jr's Auto Body. All rights reserved. | San Diego, CA</p>
     </footer>
+
+    <script>
+        /* ===========================================
+           INTERSECTION OBSERVER - SCROLL REVEALS
+           =========================================== */
+        (function () {
+            var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            if (!prefersReduced && 'IntersectionObserver' in window) {
+                var revealObserver = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                            revealObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+                document.querySelectorAll('.reveal').forEach(function (el) {
+                    revealObserver.observe(el);
+                });
+            } else {
+                // If reduced motion or no IO support, show everything
+                document.querySelectorAll('.reveal').forEach(function (el) {
+                    el.classList.add('revealed');
+                });
+            }
+
+            /* ===========================================
+               NAV: TRANSPARENT -> SOLID ON SCROLL
+               =========================================== */
+            var nav = document.getElementById('mainNav');
+            var scrollThreshold = 80;
+
+            function checkScroll() {
+                if (window.scrollY > scrollThreshold) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            }
+            window.addEventListener('scroll', checkScroll, { passive: true });
+            checkScroll();
+
+            /* ===========================================
+               SMOOTH ANCHOR SCROLL + CLOSE MOBILE MENU
+               =========================================== */
+            var navLinks = document.getElementById('navLinks');
+            var hamburgerBtn = document.getElementById('hamburgerBtn');
+
+            hamburgerBtn.addEventListener('click', function () {
+                navLinks.classList.toggle('active');
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+                link.addEventListener('click', function (e) {
+                    var targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    var target = document.querySelector(targetId);
+                    if (target) {
+                        e.preventDefault();
+                        // Close mobile menu
+                        navLinks.classList.remove('active');
+                        // Smooth scroll
+                        var navHeight = nav.offsetHeight;
+                        var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: prefersReduced ? 'auto' : 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function (e) {
+                if (!nav.contains(e.target)) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
