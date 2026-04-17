@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jr's Auto Body — Collision Repair San Diego, CA</title>
+    <meta name="description" content="Jr's Auto Body in San Diego 92113. Expert collision repair, body work, painting, and dent removal.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --red: #dc2626;
+            --red-dark: #b91c1c;
+            --dark: #111;
+            --dark-card: #1a1a1a;
+            --steel: #374151;
+            --white: #f9fafb;
+            --gray: #6b7280;
+            --light-gray: #f3f4f6;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: #1f2937; background: var(--white); }
+
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(17,17,17,0.97); backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-brand {
+            font-family: 'Teko', sans-serif;
+            color: var(--white);
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .nav-brand span { color: var(--red); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            color: rgba(255,255,255,0.7); text-decoration: none;
+            font-size: 0.85rem; font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--red); }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+        .hamburger span { width: 25px; height: 2px; background: var(--red); }
+
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--steel) 100%);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+        .hero-content { max-width: 700px; }
+        .hero-badge {
+            display: inline-block; background: var(--red);
+            color: var(--white); padding: 0.4rem 1.5rem;
+            font-family: 'Teko', sans-serif; font-size: 0.9rem;
+            letter-spacing: 3px; text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 {
+            font-family: 'Teko', sans-serif;
+            color: var(--white);
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 0.95;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+        .hero h1 span { color: var(--red); }
+        .hero p { color: rgba(255,255,255,0.6); font-size: 1.05rem; line-height: 1.7; margin-bottom: 2.5rem; }
+        .btn {
+            display: inline-block; padding: 0.9rem 2.5rem;
+            text-decoration: none; font-weight: 600;
+            font-size: 0.9rem; border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .btn-red { background: var(--red); color: var(--white); }
+        .btn-red:hover { background: var(--red-dark); }
+        .btn-outline { border: 1.5px solid rgba(255,255,255,0.3); color: var(--white); margin-left: 1rem; }
+        .btn-outline:hover { border-color: var(--red); color: var(--red); }
+
+        section { padding: 5rem 2rem; }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header h2 {
+            font-family: 'Teko', sans-serif; font-size: 2.5rem;
+            font-weight: 700; letter-spacing: 2px;
+        }
+        .section-header p { color: var(--gray); margin-top: 0.5rem; }
+        .red-line { width: 50px; height: 3px; background: var(--red); margin: 0.5rem auto; }
+
+        .services { background: var(--light-gray); }
+        .services-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem; max-width: 1100px; margin: 0 auto;
+        }
+        .service-card {
+            background: var(--white); border-radius: 8px;
+            padding: 2rem; border-left: 4px solid var(--red);
+            transition: transform 0.3s;
+        }
+        .service-card:hover { transform: translateY(-3px); }
+        .service-card h3 { font-family: 'Teko', sans-serif; font-size: 1.3rem; letter-spacing: 1px; font-weight: 600; margin-bottom: 0.5rem; }
+        .service-card p { color: var(--gray); font-size: 0.88rem; line-height: 1.6; }
+
+        .process { background: var(--dark); color: var(--white); }
+        .process .section-header h2 { color: var(--white); }
+        .process-steps {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem; max-width: 900px; margin: 0 auto;
+        }
+        .step { text-align: center; }
+        .step-num {
+            font-family: 'Teko', sans-serif;
+            font-size: 3rem; color: var(--red); font-weight: 700;
+            line-height: 1;
+        }
+        .step h3 { font-size: 1rem; margin: 0.5rem 0 0.3rem; }
+        .step p { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+
+        .contact { text-align: center; }
+        .contact h2 { font-family: 'Teko', sans-serif; font-size: 2.5rem; letter-spacing: 2px; margin-bottom: 1rem; }
+        .contact p { color: var(--gray); margin-bottom: 2rem; }
+        .contact-grid {
+            display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 2rem;
+        }
+        .contact-item .label { color: var(--red); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 0.3rem; }
+        .contact-item a { color: #1f2937; text-decoration: none; font-size: 1.05rem; }
+        .contact-item a:hover { color: var(--red); }
+
+        .map-container { max-width: 700px; margin: 0 auto; border-radius: 8px; overflow: hidden; border: 2px solid rgba(220,38,38,0.15); }
+        .map-container iframe { width: 100%; height: 280px; border: none; }
+
+        footer {
+            background: var(--dark); color: var(--gray);
+            text-align: center; padding: 2rem; font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-links.active {
+                display: flex; flex-direction: column; position: absolute;
+                top: 100%; left: 0; right: 0;
+                background: var(--dark); padding: 1.5rem 2rem; gap: 1rem;
+            }
+            .hero h1 { font-size: 3.2rem; }
+            .btn-outline { margin-left: 0; margin-top: 1rem; }
+            .hero .btn { display: block; width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-brand">JR'S <span>AUTO BODY</span></div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#contact">Free Estimate</a></li>
+        </ul>
+        <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('active')" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">San Diego Collision Experts</div>
+            <h1>JR'S <span>AUTO BODY</span></h1>
+            <p>Expert collision repair and auto body work in San Diego. From fender benders to full restorations — we'll make it look like new.</p>
+            <a href="#contact" class="btn btn-red">Free Estimate</a>
+            <a href="#services" class="btn btn-outline">Our Work</a>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="section-header">
+            <h2>WHAT WE DO</h2>
+            <div class="red-line"></div>
+            <p>Complete collision and body repair services</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Collision Repair</h3>
+                <p>Full structural and cosmetic repair from accidents. We work with all insurance companies.</p>
+            </div>
+            <div class="service-card">
+                <h3>Auto Painting</h3>
+                <p>Color-matched painting from spot repair to full body paint jobs. Factory-quality finish.</p>
+            </div>
+            <div class="service-card">
+                <h3>Dent Removal</h3>
+                <p>Paintless dent repair and traditional dent removal for all sizes of dents and dings.</p>
+            </div>
+            <div class="service-card">
+                <h3>Frame Straightening</h3>
+                <p>Computer-assisted frame and unibody straightening to factory specs.</p>
+            </div>
+            <div class="service-card">
+                <h3>Bumper Repair</h3>
+                <p>Plastic bumper repair, replacement, and refinishing for front and rear bumpers.</p>
+            </div>
+            <div class="service-card">
+                <h3>Glass Replacement</h3>
+                <p>Windshield and auto glass replacement with proper sealing and calibration.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="process" id="process">
+        <div class="section-header">
+            <h2>HOW IT WORKS</h2>
+            <div class="red-line"></div>
+        </div>
+        <div class="process-steps">
+            <div class="step">
+                <div class="step-num">01</div>
+                <h3>Free Estimate</h3>
+                <p>Bring your vehicle in or send photos for a free assessment</p>
+            </div>
+            <div class="step">
+                <div class="step-num">02</div>
+                <h3>Insurance Coordination</h3>
+                <p>We work directly with your insurance to handle claims</p>
+            </div>
+            <div class="step">
+                <div class="step-num">03</div>
+                <h3>Expert Repair</h3>
+                <p>Our technicians restore your vehicle with precision</p>
+            </div>
+            <div class="step">
+                <div class="step-num">04</div>
+                <h3>Quality Check</h3>
+                <p>Final inspection ensures everything meets our standards</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2>GET YOUR FREE ESTIMATE</h2>
+        <p>Stop by or call us. We'll assess the damage and get you back on the road.</p>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <div class="label">Location</div>
+                <div>San Diego, CA 92113</div>
+            </div>
+            <div class="contact-item">
+                <div class="label">Hours</div>
+                <div>Mon–Fri: 8AM–5:30PM | Sat: 9AM–1PM</div>
+            </div>
+        </div>
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13400.0!2d-117.13!3d32.69!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80d954e3c04a5e1f%3A0x1234567890abcdef!2sSan%20Diego%2C%20CA%2092113!5e0!3m2!1sen!2sus!4v1" allowfullscreen loading="lazy"></iframe>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Jr's Auto Body. All rights reserved. | San Diego, CA</p>
+    </footer>
+</body>
+</html>
