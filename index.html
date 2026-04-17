@@ -187,9 +187,12 @@
             background:
                 linear-gradient(160deg,
                     rgba(17, 17, 17, 0.97) 0%,
-                    rgba(30, 30, 30, 0.95) 30%,
-                    rgba(55, 65, 81, 0.9) 60%,
-                    rgba(17, 17, 17, 0.98) 100%);
+                    rgba(30, 30, 30, 0.92) 30%,
+                    rgba(55, 65, 81, 0.88) 60%,
+                    rgba(17, 17, 17, 0.95) 100%),
+                url('https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
             display: flex; align-items: center; justify-content: center;
             text-align: center;
             padding: 6rem 2rem;
@@ -517,7 +520,16 @@
         /* ============================================
            PROCESS
            ============================================ */
-        .process { background: var(--dark); color: var(--white); }
+        .process {
+            background:
+                linear-gradient(
+                    rgba(17, 17, 17, 0.92),
+                    rgba(17, 17, 17, 0.95)),
+                url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+        }
         .process .section-header h2 { color: var(--white); }
 
         .process-steps {
